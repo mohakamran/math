@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Genius Challenge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            padding: 15px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #c471ed;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .level-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .level-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .level-badge {
+            background: linear-gradient(to right, #12c2e9, #c471ed);
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .question-box {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .question {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #12c2e9;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .timer {
+            font-size: 1.1rem;
+            color: #ffcc00;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .answers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .answer-btn {
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+        }
+
+        .answer-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .answer-btn.correct {
+            background: linear-gradient(to right, #00b09b, #96c93d);
+            color: white;
+            border-color: #00b09b;
+        }
+
+        .answer-btn.wrong {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+            border-color: #ff416c;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .primary-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .primary-btn.start {
+            background: linear-gradient(to right, #00b09b, #96c93d);
+            color: white;
+        }
+
+        .primary-btn.next {
+            background: linear-gradient(to right, #2193b0, #6dd5ed);
+            color: white;
+        }
+
+        .primary-btn.hint {
+            background: linear-gradient(to right, #c471ed, #f64f59);
+            color: white;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .primary-btn:active {
+            transform: translateY(1px);
+        }
+
+        .primary-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .hint-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+            border-left: 4px solid #c471ed;
+        }
+
+        .hint-box.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reward-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .reward-animation.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .reward-content {
+            background: linear-gradient(135deg, #0f0c29, #302b63);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .reward-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+
+        .reward-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #c471ed;
+        }
+
+        .progress-container {
+            margin-top: 15px;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #00b09b, #96c93d);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .level-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.8rem;
+        }
+
+        .achievements {
+            margin-top: 25px;
+        }
+
+        .achievements-title {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #c471ed;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .achievements-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .achievement {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .achievement i {
+            color: #ffcc00;
+            font-size: 1.3rem;
+        }
+
+        .level-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .game-history {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+        }
+
+        .history-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #12c2e9;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .history-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .history-stat {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-panel {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .answers-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .question {
+                font-size: 2.2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .primary-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .achievements-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .history-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .game-card {
+                padding: 15px;
+            }
+            
+            .question {
+                font-size: 1.8rem;
+            }
+            
+            .answer-btn {
+                padding: 15px;
+                font-size: 1.1rem;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-brain"></i> Math Genius Challenge</h1>
+            <p class="tagline">Master math from basics to advanced in 10 challenging levels!</p>
+        </header>
+        
+        <div class="game-container">
+            <div class="stats-panel">
+                <div class="stat-box">
+                    <div class="stat-value" id="score">0</div>
+                    <div class="stat-label">SCORE</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="level">1</div>
+                    <div class="stat-label">LEVEL</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="streak">0</div>
+                    <div class="stat-label">STREAK</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="lives">3</div>
+                    <div class="stat-label">LIVES</div>
+                </div>
+            </div>
+            
+            <div class="game-area">
+                <div class="game-card">
+                    <div class="level-info">
+                        <div>
+                            <div class="level-title" id="level-title">Addition Challenge</div>
+                            <div class="level-description" id="level-description">Basic addition with single-digit numbers</div>
+                        </div>
+                        <div class="level-badge">Level <span id="current-level">1</span>/10</div>
+                    </div>
+                    
+                    <div class="question-box">
+                        <div>Solve this math problem:</div>
+                        <div class="question" id="question">5 + 3 = ?</div>
+                        <div class="timer">
+                            <i class="fas fa-clock"></i>
+                            Time: <span id="time">15</span>s
+                        </div>
+                    </div>
+                    
+                    <div class="answers-grid" id="answers-container">
+                        <!-- Answers will be generated by JavaScript -->
+                    </div>
+                    
+                    <div class="hint-box" id="hint-box">
+                        <strong><i class="fas fa-lightbulb"></i> Hint:</strong> 
+                        <span id="hint-text">Break the problem into smaller parts.</span>
+                    </div>
+                    
+                    <div class="controls">
+                        <button class="primary-btn start" id="start-btn">
+                            <i class="fas fa-play"></i> Start Game
+                        </button>
+                        <button class="primary-btn next" id="next-btn" disabled>
+                            <i class="fas fa-forward"></i> Next Question
+                        </button>
+                        <button class="primary-btn hint" id="hint-btn">
+                            <i class="fas fa-lightbulb"></i> Get Hint
+                        </button>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="level-progress">
+                            <span>Level Progress</span>
+                            <span id="progress-text">0/10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-history">
+                    <div class="history-title">
+                        <i class="fas fa-chart-line"></i> Your Progress
+                    </div>
+                    <div class="history-stats" id="history-stats">
+                        <!-- History stats will be loaded from localStorage -->
+                    </div>
+                </div>
+                
+                <div class="achievements">
+                    <div class="achievements-title">
+                        <i class="fas fa-trophy"></i> Achievements
+                    </div>
+                    <div class="achievements-list" id="achievements-list">
+                        <!-- Achievements will be added by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reward Animation -->
+    <div class="reward-animation" id="reward-animation">
+        <div class="reward-content">
+            <div class="reward-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="reward-title" id="reward-title">Level Up!</div>
+            <p id="reward-description">You've reached Level 2! New challenges unlocked.</p>
+            <button class="primary-btn start" id="close-reward">
+                Continue Playing
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        const gameState = {
+            score: 0,
+            level: 1,
+            streak: 0,
+            lives: 3,
+            currentQuestion: null,
+            correctAnswer: null,
+            questionsAnswered: 0,
+            questionsPerLevel: 10,
+            timeLeft: 15,
+            timer: null,
+            gameActive: false,
+            achievements: [
+                { id: 1, name: "First Steps", description: "Answer 10 questions", icon: "fas fa-footsteps", achieved: false },
+                { id: 2, name: "Quick Thinker", description: "Answer 5 questions in under 5 seconds", icon: "fas fa-bolt", achieved: false },
+                { id: 3, name: "Math Whiz", description: "Reach level 5", icon: "fas fa-crown", achieved: false },
+                { id: 4, name: "Perfect Streak", description: "Answer 15 questions in a row", icon: "fas fa-fire", achieved: false },
+                { id: 5, name: "Math Master", description: "Reach level 10", icon: "fas fa-graduation-cap", achieved: false },
+                { id: 6, name: "Speed Demon", description: "Answer 30 questions with time to spare", icon: "fas fa-running", achieved: false },
+                { id: 7, name: "Division Expert", description: "Correctly solve 10 division problems", icon: "fas fa-divide", achieved: false },
+                { id: 8, name: "High Scorer", description: "Score over 1000 points", icon: "fas fa-star", achieved: false }
+            ],
+            quickAnswers: 0,
+            totalQuestions: 0,
+            divisionSolved: 0,
+            savedStats: {
+                highScore: 0,
+                highestLevel: 1,
+                totalGames: 0,
+                totalQuestionsAnswered: 0,
+                totalCorrectAnswers: 0
+            }
+        };
+
+        // Level configurations
+        const levelConfigs = {
+            1: { 
+                name: "Addition Basics", 
+                description: "Simple addition with numbers 1-10",
+                operations: ['+'],
+                numRange: [1, 10],
+                time: 15
+            },
+            2: { 
+                name: "Subtraction Basics", 
+                description: "Simple subtraction with numbers 1-20",
+                operations: ['-'],
+                numRange: [1, 20],
+                time: 14
+            },
+            3: { 
+                name: "Mixed Operations", 
+                description: "Addition and subtraction with numbers 1-30",
+                operations: ['+', '-'],
+                numRange: [1, 30],
+                time: 13
+            },
+            4: { 
+                name: "Multiplication Basics", 
+                description: "Multiplication with numbers 1-10",
+                operations: ['×'],
+                numRange: [1, 10],
+                time: 12
+            },
+            5: { 
+                name: "Division Basics", 
+                description: "Simple division with numbers up to 50",
+                operations: ['÷'],
+                numRange: [1, 50],
+                time: 12
+            },
+            6: { 
+                name: "Mixed Challenge", 
+                description: "All four operations with numbers up to 50",
+                operations: ['+', '-', '×', '÷'],
+                numRange: [1, 50],
+                time: 11
+            },
+            7: { 
+                name: "Advanced Arithmetic", 
+                description: "Two-step problems with numbers up to 100",
+                operations: ['+', '-', '×', '÷'],
+                numRange: [1, 100],
+                time: 10
+            },
+            8: { 
+                name: "Exponents & Roots", 
+                description: "Squares and square roots",
+                operations: ['^', '√'],
+                numRange: [1, 15],
+                time: 10
+            },
+            9: { 
+                name: "Fractions", 
+                description: "Simple fraction operations",
+                operations: ['+', '-'],
+                numRange: [1, 10],
+                time: 9,
+                useFractions: true
+            },
+            10: { 
+                name: "Master Challenge", 
+                description: "Complex multi-operation problems",
+                operations: ['+', '-', '×', '÷', '^', '√'],
+                numRange: [1, 100],
+                time: 8
+            }
+        };
+
+        // DOM Elements
+        const scoreElement = document.getElementById('score');
+        const levelElement = document.getElementById('level');
+        const streakElement = document.getElementById('streak');
+        const livesElement = document.getElementById('lives');
+        const questionElement = document.getElementById('question');
+        const answersContainer = document.getElementById('answers-container');
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const hintBtn = document.getElementById('hint-btn');
+        const hintBox = document.getElementById('hint-box');
+        const hintText = document.getElementById('hint-text');
+        const timeElement = document.getElementById('time');
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const currentLevelElement = document.getElementById('current-level');
+        const levelTitleElement = document.getElementById('level-title');
+        const levelDescriptionElement = document.getElementById('level-description');
+        const rewardAnimation = document.getElementById('reward-animation');
+        const rewardTitle = document.getElementById('reward-title');
+        const rewardDescription = document.getElementById('reward-description');
+        const closeRewardBtn = document.getElementById('close-reward');
+        const achievementsList = document.getElementById('achievements-list');
+        const historyStatsElement = document.getElementById('history-stats');
+
+        // Load saved data from localStorage
+        function loadSavedData() {
+            const savedStats = localStorage.getItem('mathGeniusStats');
+            if (savedStats) {
+                gameState.savedStats = JSON.parse(savedStats);
+                updateHistoryStats();
+            }
+            
+            const savedAchievements = localStorage.getItem('mathGeniusAchievements');
+            if (savedAchievements) {
+                const saved = JSON.parse(savedAchievements);
+                gameState.achievements = gameState.achievements.map(ach => {
+                    const savedAch = saved.find(s => s.id === ach.id);
+                    return savedAch ? { ...ach, achieved: savedAch.achieved } : ach;
+                });
+            }
+        }
+
+        // Save data to localStorage
+        function saveGameData() {
+            localStorage.setItem('mathGeniusStats', JSON.stringify(gameState.savedStats));
+            localStorage.setItem('mathGeniusAchievements', JSON.stringify(gameState.achievements));
+        }
+
+        // Update history stats display
+        function updateHistoryStats() {
+            historyStatsElement.innerHTML = `
+                <div class="history-stat">
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #c471ed;">${gameState.savedStats.highScore}</div>
+                    <div>High Score</div>
+                </div>
+                <div class="history-stat">
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #12c2e9;">${gameState.savedStats.highestLevel}</div>
+                    <div>Highest Level</div>
+                </div>
+                <div class="history-stat">
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #00b09b;">${gameState.savedStats.totalGames}</div>
+                    <div>Games Played</div>
+                </div>
+                <div class="history-stat">
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #ffcc00;">${gameState.savedStats.totalQuestionsAnswered}</div>
+                    <div>Questions Answered</div>
+                </div>
+            `;
+        }
+
+        // Initialize achievements display
+        function initAchievements() {
+            achievementsList.innerHTML = '';
+            gameState.achievements.forEach(achievement => {
+                const achievementElement = document.createElement('div');
+                achievementElement.className = 'achievement';
+                achievementElement.innerHTML = `
+                    <i class="${achievement.icon}"></i>
+                    <div style="flex: 1;">
+                        <div><strong>${achievement.name}</strong></div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">${achievement.description}</div>
+                        <div style="font-size: 0.7rem; margin-top: 5px; color: ${achievement.achieved ? '#96c93d' : '#ffcc00'}">
+                            <i class="fas fa-${achievement.achieved ? 'check-circle' : 'lock'}"></i>
+                            ${achievement.achieved ? 'Unlocked' : 'Locked'}
+                        </div>
+                    </div>
+                `;
+                achievementsList.appendChild(achievementElement);
+            });
+        }
+
+        // Generate a random math question based on level
+        function generateQuestion() {
+            const config = levelConfigs[gameState.level];
+            let num1, num2, operator, answer, hint, questionText;
+            
+            // Randomly select an operator from the level's allowed operations
+            operator = config.operations[Math.floor(Math.random() * config.operations.length)];
+            
+            // Generate numbers based on level
+            if (operator === '+') {
+                num1 = Math.floor(Math.random() * (config.numRange[1] - config.numRange[0] + 1)) + config.numRange[0];
+                num2 = Math.floor(Math.random() * (config.numRange[1] - config.numRange[0] + 1)) + config.numRange[0];
+                answer = num1 + num2;
+                hint = `Add ${num1} and ${num2} together.`;
+                questionText = `${num1} + ${num2} = ?`;
+            } 
+            else if (operator === '-') {
+                num1 = Math.floor(Math.random() * (config.numRange[1] - config.numRange[0] + 1)) + config.numRange[0];
+                num2 = Math.floor(Math.random() * (config.numRange[1] - config.numRange[0] + 1)) + config.numRange[0];
+                // Ensure positive result
+                if (num1 < num2) [num1, num2] = [num2, num1];
+                answer = num1 - num2;
+                hint = `Subtract ${num2} from ${num1}. Count backwards from ${num1}.`;
+                questionText = `${num1} - ${num2} = ?`;
+            }
+            else if (operator === '×') {
+                num1 = Math.floor(Math.random() * (config.numRange[1] - config.numRange[0] + 1)) + config.numRange[0];
+                num2 = Math.floor(Math.random() * (config.numRange[1] - config.numRange[0] + 1)) + config.numRange[0];
+                answer = num1 * num2;
+                hint = `Multiply ${num1} by ${num2}. You can think of it as ${num1} added together ${num2} times.`;
+                questionText = `${num1} × ${num2} = ?`;
+            }
+            else if (operator === '÷') {
+                // For division, make sure we get a whole number result
+                answer = Math.floor(Math.random() * (config.numRange[1] - config.numRange[0] + 1)) + config.numRange[0];
+                num2 = Math.floor(Math.random() * (config.numRange[1] - config.numRange[0] + 1)) + config.numRange[0];
+                num1 = answer * num2;
+                hint = `Divide ${num1} by ${num2}. How many times does ${num2} go into ${num1}?`;
+                questionText = `${num1} ÷ ${num2} = ?`;
+            }
+            else if (operator === '^') {
+                // Square numbers
+                num1 = Math.floor(Math.random() * (config.numRange[1] - config.numRange[0] + 1)) + config.numRange[0];
+                answer = num1 * num1;
+                hint = `${num1} squared is ${num1} × ${num1}.`;
+                questionText = `${num1}² = ?`;
+            }
+            else if (operator === '√') {
+                // Square roots
+                num1 = Math.floor(Math.random() * (config.numRange[1] - config.numRange[0] + 1)) + config.numRange[0];
+                answer = num1;
+                num1 = answer * answer;
+                hint = `What number multiplied by itself gives you ${num1}?`;
+                questionText = `√${num1} = ?`;
+            }
+            
+            // Store correct answer
+            gameState.correctAnswer = answer;
+            
+            // Generate wrong answers
+            let answers = [answer];
+            while (answers.length < 4) {
+                let wrongAnswer;
+                
+                // Generate plausible wrong answers
+                const variation = Math.floor(Math.random() * 5) + 1;
+                const direction = Math.random() > 0.5 ? 1 : -1;
+                
+                if (operator === '÷') {
+                    wrongAnswer = answer + direction * variation;
+                } else {
+                    wrongAnswer = answer + direction * variation * Math.max(1, Math.floor(answer/10));
+                }
+                
+                // Ensure wrong answer is different, positive, and reasonable
+                if (wrongAnswer !== answer && wrongAnswer > 0 && !answers.includes(wrongAnswer)) {
+                    answers.push(wrongAnswer);
+                }
+            }
+            
+            // Shuffle answers
+            answers = answers.sort(() => Math.random() - 0.5);
+            
+            // Update question display
+            questionElement.textContent = questionText;
+            hintText.textContent = hint;
+            
+            // Update level info
+            levelTitleElement.textContent = config.name;
+            levelDescriptionElement.textContent = config.description;
+            
+            // Update answers buttons
+            answersContainer.innerHTML = '';
+            answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.className = 'answer-btn';
+                button.textContent = answer;
+                button.addEventListener('click', () => checkAnswer(answer, button));
+                answersContainer.appendChild(button);
+            });
+            
+            // Reset and start timer
+            clearInterval(gameState.timer);
+            gameState.timeLeft = config.time;
+            updateTimerDisplay();
+            gameState.timer = setInterval(updateTimer, 1000);
+        }
+
+        // Update timer
+        function updateTimer() {
+            if (!gameState.gameActive) return;
+            
+            gameState.timeLeft--;
+            updateTimerDisplay();
+            
+            if (gameState.timeLeft <= 0) {
+                clearInterval(gameState.timer);
+                timeUp();
+            }
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            timeElement.textContent = gameState.timeLeft;
+            
+            // Change color when time is running low
+            if (gameState.timeLeft <= 3) {
+                timeElement.style.color = '#ff4b2b';
+            } else if (gameState.timeLeft <= 6) {
+                timeElement.style.color = '#ffcc00';
+            } else {
+                timeElement.style.color = '#96c93d';
+            }
+        }
+
+        // Handle time up
+        function timeUp() {
+            gameState.lives--;
+            updateStats();
+            
+            if (gameState.lives <= 0) {
+                gameOver();
+            } else {
+                showHint("Time's up! The correct answer was " + gameState.correctAnswer);
+                nextBtn.disabled = false;
+                disableAnswerButtons();
+            }
+        }
+
+        // Check selected answer
+        function checkAnswer(selectedAnswer, button) {
+            if (!gameState.gameActive) return;
+            
+            clearInterval(gameState.timer);
+            gameState.totalQuestions++;
+            gameState.savedStats.totalQuestionsAnswered++;
+            
+            // Track division questions for achievement
+            if (questionElement.textContent.includes('÷')) {
+                gameState.divisionSolved++;
+            }
+            
+            // Check if answer was quick (under 5 seconds)
+            const config = levelConfigs[gameState.level];
+            if (gameState.timeLeft > (config.time - 5)) {
+                gameState.quickAnswers++;
+            }
+            
+            if (selectedAnswer === gameState.correctAnswer) {
+                // Correct answer
+                button.classList.add('correct');
+                gameState.score += 10 * gameState.level;
+                gameState.streak++;
+                gameState.savedStats.totalCorrectAnswers++;
+                
+                // Bonus for quick answers
+                if (gameState.timeLeft > config.time - 3) {
+                    gameState.score += 10;
+                    showHint("Excellent! Quick thinking bonus!");
+                } else if (gameState.timeLeft > config.time - 6) {
+                    gameState.score += 5;
+                    showHint("Great! Time bonus!");
+                } else {
+                    showHint("Correct! Well done!");
+                }
+                
+                // Check achievements
+                checkAchievements();
+            } else {
+                // Wrong answer
+                button.classList.add('wrong');
+                gameState.lives--;
+                gameState.streak = 0;
+                showHint(`Incorrect. The right answer is ${gameState.correctAnswer}`);
+                
+                // Highlight correct answer
+                document.querySelectorAll('.answer-btn').forEach(btn => {
+                    if (parseInt(btn.textContent) === gameState.correctAnswer) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+            
+            gameState.questionsAnswered++;
+            updateStats();
+            updateProgress();
+            nextBtn.disabled = false;
+            disableAnswerButtons();
+            
+            // Check if level is complete
+            if (gameState.questionsAnswered % gameState.questionsPerLevel === 0) {
+                setTimeout(levelUp, 1000);
+            }
+            
+            // Check if game over
+            if (gameState.lives <= 0) {
+                setTimeout(gameOver, 1500);
+            }
+            
+            // Save progress
+            saveGameData();
+        }
+
+        // Disable answer buttons after selection
+        function disableAnswerButtons() {
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+                btn.disabled = true;
+            });
+        }
+
+        // Enable answer buttons
+        function enableAnswerButtons() {
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+                btn.disabled = false;
+                btn.classList.remove('correct', 'wrong');
+            });
+        }
+
+        // Update game stats display
+        function updateStats() {
+            scoreElement.textContent = gameState.score;
+            levelElement.textContent = gameState.level;
+            streakElement.textContent = gameState.streak;
+            livesElement.textContent = gameState.lives;
+            currentLevelElement.textContent = gameState.level;
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = (gameState.questionsAnswered % gameState.questionsPerLevel) / gameState.questionsPerLevel * 100;
+            progressFill.style.width = `${progress}%`;
+            progressText.textContent = `${gameState.questionsAnswered % gameState.questionsPerLevel}/${gameState.questionsPerLevel}`;
+        }
+
+        // Show hint
+        function showHint(message) {
+            hintText.textContent = message;
+            hintBox.classList.add('show');
+        }
+
+        // Hide hint
+        function hideHint() {
+            hintBox.classList.remove('show');
+        }
+
+        // Level up
+        function levelUp() {
+            if (gameState.level < 10) {
+                gameState.level++;
+                updateStats();
+                
+                // Show reward animation
+                rewardTitle.textContent = `Level ${gameState.level} Unlocked!`;
+                rewardDescription.textContent = `Great work! You've reached ${levelConfigs[gameState.level].name}.`;
+                rewardAnimation.classList.add('show');
+                
+                // Update saved stats
+                if (gameState.level > gameState.savedStats.highestLevel) {
+                    gameState.savedStats.highestLevel = gameState.level;
+                }
+                
+                // Reset progress for new level
+                progressFill.style.width = '0%';
+                progressText.textContent = `0/${gameState.questionsPerLevel}`;
+                
+                // Check for level-based achievements
+                checkAchievements();
+                saveGameData();
+            } else {
+                // Game completed!
+                rewardTitle.textContent = "Math Genius Mastered!";
+                rewardDescription.textContent = `Congratulations! You've completed all 10 levels with a score of ${gameState.score}! You're officially a Math Genius!`;
+                rewardAnimation.classList.add('show');
+                gameState.gameActive = false;
+                nextBtn.disabled = true;
+            }
+        }
+
+        // Check achievements
+        function checkAchievements() {
+            // First Steps: Answer 10 questions
+            if (gameState.totalQuestions >= 10 && !gameState.achievements[0].achieved) {
+                gameState.achievements[0].achieved = true;
+                unlockAchievement(0);
+            }
+            
+            // Quick Thinker: Answer 5 questions in under 5 seconds
+            if (gameState.quickAnswers >= 5 && !gameState.achievements[1].achieved) {
+                gameState.achievements[1].achieved = true;
+                unlockAchievement(1);
+            }
+            
+            // Math Whiz: Reach level 5
+            if (gameState.level >= 5 && !gameState.achievements[2].achieved) {
+                gameState.achievements[2].achieved = true;
+                unlockAchievement(2);
+            }
+            
+            // Perfect Streak: Answer 15 questions in a row
+            if (gameState.streak >= 15 && !gameState.achievements[3].achieved) {
+                gameState.achievements[3].achieved = true;
+                unlockAchievement(3);
+            }
+            
+            // Math Master: Reach level 10
+            if (gameState.level >= 10 && !gameState.achievements[4].achieved) {
+                gameState.achievements[4].achieved = true;
+                unlockAchievement(4);
+            }
+            
+            // Speed Demon: Answer 30 questions with time to spare
+            if (gameState.quickAnswers >= 30 && !gameState.achievements[5].achieved) {
+                gameState.achievements[5].achieved = true;
+                unlockAchievement(5);
+            }
+            
+            // Division Expert: Correctly solve 10 division problems
+            if (gameState.divisionSolved >= 10 && !gameState.achievements[6].achieved) {
+                gameState.achievements[6].achieved = true;
+                unlockAchievement(6);
+            }
+            
+            // High Scorer: Score over 1000 points
+            if (gameState.score >= 1000 && !gameState.achievements[7].achieved) {
+                gameState.achievements[7].achieved = true;
+                unlockAchievement(7);
+            }
+        }
+
+        // Unlock achievement
+        function unlockAchievement(index) {
+            // Update display
+            initAchievements();
+            
+            // Show notification
+            setTimeout(() => {
+                showHint(`Achievement Unlocked: ${gameState.achievements[index].name}!`);
+            }, 500);
+            
+            saveGameData();
+        }
+
+        // Game over
+        function gameOver() {
+            gameState.gameActive = false;
+            startBtn.disabled = false;
+            nextBtn.disabled = true;
+            
+            // Update saved stats
+            gameState.savedStats.totalGames++;
+            if (gameState.score > gameState.savedStats.highScore) {
+                gameState.savedStats.highScore = gameState.score;
+            }
+            
+            // Show game over reward screen
+            rewardTitle.textContent = "Game Over!";
+            rewardDescription.textContent = `You scored ${gameState.score} points and reached Level ${gameState.level}. Your high score: ${gameState.savedStats.highScore}`;
+            rewardAnimation.classList.add('show');
+            
+            saveGameData();
+            updateHistoryStats();
+        }
+
+        // Start new game
+        function startGame() {
+            // Reset game state
+            gameState.score = 0;
+            gameState.level = 1;
+            gameState.streak = 0;
+            gameState.lives = 3;
+            gameState.questionsAnswered = 0;
+            gameState.quickAnswers = 0;
+            gameState.totalQuestions = 0;
+            gameState.divisionSolved = 0;
+            gameState.gameActive = true;
+            
+            // Update UI
+            updateStats();
+            updateProgress();
+            startBtn.disabled = true;
+            nextBtn.disabled = false;
+            hideHint();
+            
+            // Update level info
+            levelTitleElement.textContent = levelConfigs[1].name;
+            levelDescriptionElement.textContent = levelConfigs[1].description;
+            
+            // Generate first question
+            generateQuestion();
+            enableAnswerButtons();
+        }
+
+        // Initialize game
+        function init() {
+            // Load saved data
+            loadSavedData();
+            
+            // Set up event listeners
+            startBtn.addEventListener('click', startGame);
+            
+            nextBtn.addEventListener('click', () => {
+                if (!gameState.gameActive) return;
+                
+                nextBtn.disabled = true;
+                hideHint();
+                generateQuestion();
+                enableAnswerButtons();
+            });
+            
+            hintBtn.addEventListener('click', () => {
+                if (gameState.gameActive) {
+                    showHint(hintText.textContent);
+                }
+            });
+            
+            closeRewardBtn.addEventListener('click', () => {
+                rewardAnimation.classList.remove('show');
+            });
+            
+            // Initialize achievements
+            initAchievements();
+            updateHistoryStats();
+            
+            // Show welcome message
+            showHint("Welcome to Math Genius Challenge! Complete 10 levels of increasing difficulty. Your progress is saved automatically.");
+        }
+
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
