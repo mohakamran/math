@@ -88,11 +88,10 @@ Play the game here:
 ## 📁 Project Structure
 
 math/
-│
-├── index.html # Main game file
-├── Screenshot.png # Game screenshot
-├── README.md # Documentation
 
+1. index.html # Main game file
+2. Screenshot.png # Game screenshot
+3. README.md # Documentation
 
 > The entire game is contained in a single HTML file with embedded CSS and JavaScript.
 
